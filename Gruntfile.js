@@ -9,14 +9,6 @@ module.exports = function (grunt) {
     pkg: grunt.file.readJSON('package.json'),
     
     browserify: {
-      vendor: {
-        src: [],
-        dest: 'build/js/vendor.js',
-        options: {
-          require: ['jquery','underscore','backbone'],
-        }
-      },
-  
       dist: {
         src: ['ui/js/app.js'],
         dest: 'build/js/app.js',
@@ -47,7 +39,13 @@ module.exports = function (grunt) {
       },
 
 
-  },     
+  },
+  "jsbeautifier" : {
+    files : ["ui/**/*.js"],
+    options : {
+    }
+}
+     
      
 
     
@@ -56,6 +54,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', ['copy','browserify']);
 
+  grunt.registerTask('pretty', ['jsbeautifier']);
 
 
 

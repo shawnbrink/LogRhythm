@@ -12,10 +12,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 
-
-
-
-
 ///Static files
 app.use('/css', express.static('../build/css'));
 app.use('/js', express.static('../build/js'));
@@ -33,5 +29,5 @@ for (var i in routes) app.use('/', routes[i]);
 
 if (!module.parent) {
   app.listen(3000);
-  console.log('app started on port 3000');
+  console.log('LogRhythm demo app started on port 3000');
 }

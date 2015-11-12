@@ -6,15 +6,19 @@ Backbone.emulateHTTP = true;
 var Main = require('./main.js');
 App = {
 
-    Models:{},
-    Collection:{},
-    Views:{},
+    Models: {},
+    Collection: {},
+    Views: {},
     root: "/",
 
-    init:function(){ 
-      this.Views.main = new Main({ el: $("#main")})
+    init: function() {
+        this.Views.main = new Main({
+            el: $("#main")
+        })
     }
 }
 
-Backbone.history.start({pushState: true})
+Backbone.history.start({
+    pushState: true
+})
 App.init();

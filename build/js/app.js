@@ -12932,11 +12932,13 @@ module.exports = Backbone.Collection.extend({
 
     },
 
-    saveModel:function(model){
-    	model.set('id', _.uniqueId('stu'));
+    saveModel:function(savemodel){
+    	
+    
     	var _this = this;
-    	_this.add(model);
-    	model.save({}, { 
+    	_this.add(savemodel);
+    	console.log(this);
+    	savemodel.save({}, { 
     	type: 'post'
 		})
 
@@ -12946,8 +12948,8 @@ module.exports = Backbone.Collection.extend({
 
     },
 
-    updateModel:function(model){
-    	model.save({}, { 
+    updateModel:function(upmodel){
+    	upmodel.save({}, { 
     	type: 'put'
 		})
     	
@@ -12955,12 +12957,12 @@ module.exports = Backbone.Collection.extend({
 
     },
 
-     removeModel:function(model){
-     	debugger
-     	model.save({}, { 
+     removeModel:function(removemodel){
+     
+     	removemodel.save({}, { 
     	type: 'delete' 
 		})
-    	this.remove(model);
+    	this.remove(removemodel);
     	this.trigger('add-student');
 	
 
@@ -12972,7 +12974,11 @@ module.exports = Backbone.Collection.extend({
 });
 },{}],8:[function(require,module,exports){
 module.exports = Backbone.Model.extend({
-	 url: 'api/student'
+	 url: 'api/student',
+	 initialize:function(){
+	 	this.set('id', _.uniqueId('stu'))
+
+	 }
 });
 },{}],9:[function(require,module,exports){
 module.exports = function(obj){
