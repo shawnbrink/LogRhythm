@@ -37,8 +37,8 @@ Done, without errors.
 
 	 node server.js
 Example out put in terminal
-
 >LogRhythm demo app started on port 3000
+
 ## Launch app in a browser
 
 Open browser
