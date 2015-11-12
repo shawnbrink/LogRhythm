@@ -12669,18 +12669,23 @@ Backbone.emulateHTTP = true;
 var Main = require('./main.js');
 App = {
 
-    Models:{},
-    Collection:{},
-    Views:{},
+    Models: {},
+    Collection: {},
+    Views: {},
     root: "/",
 
-    init:function(){ 
-      this.Views.main = new Main({ el: $("#main")})
+    init: function() {
+        this.Views.main = new Main({
+            el: $("#main")
+        })
     }
 }
 
-Backbone.history.start({pushState: true})
+Backbone.history.start({
+    pushState: true
+})
 App.init();
+
 },{"./main.js":6,"backbone":1,"jquery":3,"underscore":4}],6:[function(require,module,exports){
 var maintpl = require('../tpl/main.tpl');
 var studenttpl = require('../tpl/student.tpl');
@@ -12688,42 +12693,42 @@ var statstpl = require('../tpl/stats.tpl');
 var Model = require('../models/studentModel');
 var Collection = require('../models/studentCollection');
 module.exports = Backbone.View.extend({
-     events: {
-        "click .submitBtn":"formSubmit",
+    events: {
+        "click .submitBtn": "formSubmit",
         'keydown #testScore': 'checkNumber',
-        "click .close":"closeError",
-        "click .list-group-item":"edit",
-        "click .list-group-item button":"deleteStudent"
-        },
+        "click .close": "closeError",
+        "click .list-group-item": "edit",
+        "click .list-group-item button": "deleteStudent"
+    },
 
 
-    initialize: function(el){ 
-      
+    initialize: function(el) {
+
         this.setElement(el.el)
         this.collection = new Collection();
 
-        this.listenTo(this.collection,'add-student',this.addStudent);
-        this.listenTo(this.collection,'delete-student',this.deleteStudent);
-       
+        this.listenTo(this.collection, 'add-student', this.addStudent);
+        this.listenTo(this.collection, 'delete-student', this.deleteStudent);
 
-    	this.render();
+
+        this.render();
     },
-    render: function(){ 
-    	this.$el.html(maintpl);
-          
+    render: function() {
+        this.$el.html(maintpl);
+
 
     },
-    closeError:function(){
+    closeError: function() {
         $("#error").addClass('hide')
     },
-    
 
-    formSubmit:function(evt){
-        var textBox =  $.trim( $('input[type=text]').val() );
+
+    formSubmit: function(evt) {
+        var textBox = $.trim($('input[type=text]').val());
 
         if (textBox === "") {
             this.error = $("#error").removeClass('hide');
-            }else if(this.error){
+        } else if (this.error) {
 
             $("#error").addClass('hide')
             this.error = false;
@@ -12731,101 +12736,101 @@ module.exports = Backbone.View.extend({
         var form = $('#studentForm');
         var data = $(form).serializeArray();
 
-       
+
 
         var parsedData = _.object(_.map(data, _.values));
         console.log(parsedData);
-        
-        if(!this.error){
+
+        if (!this.error) {
             var student = new Model();
 
 
 
             student.set(parsedData);
-         var setInit = parseInt(student.get('testscore'));
-            if(setInit >= 65){
+            var setInit = parseInt(student.get('testscore'));
+            if (setInit >= 65) {
 
-                student.set('classgrade','pass');
-              }else{
-                student.set('classgrade','fail');
+                student.set('classgrade', 'pass');
+            } else {
+                student.set('classgrade', 'fail');
 
-              }
+            }
             this.collection.saveModel(student);
-          
+
             $(form).find("input[type=text]").val("");
             $(form).find("input[type=number]").val("");
         }
     },
-    edit:function(e){
+    edit: function(e) {
         var bool = false;
 
-        if(!bool){
+        if (!bool) {
             bool = true;
             var id = $(e.currentTarget).attr("data-id");
             var model = this.collection.get(id);
-            var first = id+'first';
-            var last = id+'last'
-            var score = id+'score'
-            
-          
-            $('#'+first).editable('click', function(e){
-              model.set('firstname',e.value);
+            var first = id + 'first';
+            var last = id + 'last'
+            var score = id + 'score'
+
+
+            $('#' + first).editable('click', function(e) {
+                model.set('firstname', e.value);
             });
 
-            $('#'+last).editable('click', function(e){
-              model.set('lastname',e.value);
+            $('#' + last).editable('click', function(e) {
+                model.set('lastname', e.value);
             });
 
-             $('#'+score).editable('click', function(e){
+            $('#' + score).editable('click', function(e) {
 
-                if(e.value == ""){
+                if (e.value == "") {
                     e.value = "0"
 
                 }
-              model.set('testscore',e.value);
+                model.set('testscore', e.value);
 
-           
-              if(e.value >= 65){
 
-                model.set('classgrade','pass');
-              }else{
-                model.set('classgrade','fail');
+                if (e.value >= 65) {
 
-              }
+                    model.set('classgrade', 'pass');
+                } else {
+                    model.set('classgrade', 'fail');
+
+                }
             });
 
-            if(model){
-                 if(model.hasChanged('firstname')){
-                 this.collection.updateModel(model)
-                 this.addStudent();
-                 this.renderStats();
-                    }
-                    if(model.hasChanged('lastname')){
-                 this.collection.updateModel(model)
-                 this.addStudent()
-                 this.renderStats();
-                    }
-                      if(model.hasChanged('testscore')){
-                 this.collection.updateModel(model)
-                 this.addStudent()
-                 this.renderStats();
-                    }
-                      if(model.hasChanged('classgrade')){
-                 this.collection.updateModel(model)
-                 this.addStudent()
-                 this.renderStats();
-                    }
+            if (model) {
+                if (model.hasChanged('firstname')) {
+                    this.collection.updateModel(model)
+                    this.addStudent();
+                    this.renderStats();
+                }
+                if (model.hasChanged('lastname')) {
+                    this.collection.updateModel(model)
+                    this.addStudent()
+                    this.renderStats();
+                }
+                if (model.hasChanged('testscore')) {
+                    this.collection.updateModel(model)
+                    this.addStudent()
+                    this.renderStats();
+                }
+                if (model.hasChanged('classgrade')) {
+                    this.collection.updateModel(model)
+                    this.addStudent()
+                    this.renderStats();
+                }
             }
 
-            
+
 
             bool = false;
         }
     },
 
 
-    
-    checkNumber:function(evt){
+
+    checkNumber: function(evt) {
 
 
         evt = (evt) ? evt : window.event;
@@ -12838,148 +12843,151 @@ module.exports = Backbone.View.extend({
 
     },
 
-   	addStudent:function(){
+    addStudent: function() {
 
-       
+
         var list = $(this.$el).find('#studentList');
         var data = this.collection.toJSON();
-    
+
         var html = studenttpl(data);
         this.renderStats();
-   
+
         list.html(html);
 
     },
 
-    deleteStudent:function(e){
+    deleteStudent: function(e) {
         var id = $(e.currentTarget).attr("data-id");
-       var model = this.collection.get(id);
-       this.collection.removeModel(model);
-       this.collection.remove(model);
-       var list = $(this.$el).find('#studentList');
+        var model = this.collection.get(id);
+        this.collection.removeModel(model);
+        this.collection.remove(model);
+        var list = $(this.$el).find('#studentList');
         var data = this.collection.toJSON();
-    
+
         var html = studenttpl(data);
         this.renderStats();
-        
+
         list.html(html);
 
     },
 
-    renderStats:function(){
+    renderStats: function() {
         var statsModel = new Model({
             defaults: {
-                minval:0,
-                maxval:0,
-                avgval:0
+                minval: 0,
+                maxval: 0,
+                avgval: 0
             }
 
         });
         var json = this.collection.toJSON();
-     
-        var min = _.min(json,function(item) {
+
+        var min = _.min(json, function(item) {
             return parseInt(item.testscore);
         });
-         var max = _.max(json,function(item) {
+        var max = _.max(json, function(item) {
             return parseInt(item.testscore);
         })
 
 
-       
-        var avg = this.collection.reduce(function(memo, value) { 
-            return memo + parseInt(value.get("testscore")) 
-        }, 0)/ this.collection.length;
+
+        var avg = this.collection.reduce(function(memo, value) {
+            return memo + parseInt(value.get("testscore"))
+        }, 0) / this.collection.length;
 
         var parseMax = parseInt(max.testscore);
         var parseMin = parseInt(min.testscore);
         var parseAvg = parseInt(avg);
-       
-        if(isNaN(parseMax)){
-             parseMax = 0;
+
+        if (isNaN(parseMax)) {
+            parseMax = 0;
         }
-         if(isNaN(parseMin)){
-             parseMin = 0;
+        if (isNaN(parseMin)) {
+            parseMin = 0;
         }
-         if(isNaN(parseAvg)){
-             parseAvg = 0;
+        if (isNaN(parseAvg)) {
+            parseAvg = 0;
         }
 
-       statsModel.set({'minval':parseMin,'maxval':parseMax,'avgval':parseAvg})
-         var statsHtml = $(this.$el).find('#stats');
-         var data = statsModel.toJSON();
+        statsModel.set({
+            'minval': parseMin,
+            'maxval': parseMax,
+            'avgval': parseAvg
+        })
+        var statsHtml = $(this.$el).find('#stats');
+        var data = statsModel.toJSON();
         var html = statstpl(data);
         statsHtml.html(html);
 
     }
 
 });
+
 },{"../models/studentCollection":7,"../models/studentModel":8,"../tpl/main.tpl":9,"../tpl/stats.tpl":10,"../tpl/student.tpl":11}],7:[function(require,module,exports){
-
-
-
-
 module.exports = Backbone.Collection.extend({
     url: 'api/student',
-   
+
     initialize: function() {
-    	var _this = this;
-    	this.fetch({
-            success: function(resp){
-            	_this.trigger('add-student');
+        var _this = this;
+        this.fetch({
+            success: function(resp) {
+                _this.trigger('add-student');
             }
-          
+
         });
 
     },
 
-    saveModel:function(savemodel){
-    	
-    
-    	var _this = this;
-    	_this.add(savemodel);
-    	console.log(this);
-    	savemodel.save({}, { 
-    	type: 'post'
-		})
+    saveModel: function(savemodel) {
 
-    	this.trigger('add-student');
-    	
-		
+
+        var _this = this;
+        _this.add(savemodel);
+        console.log(this);
+        savemodel.save({}, {
+            type: 'post'
+        })
+
+        this.trigger('add-student');
+
+
 
     },
 
-    updateModel:function(upmodel){
-    	upmodel.save({}, { 
-    	type: 'put'
-		})
-    	
-	
+    updateModel: function(upmodel) {
+        upmodel.save({}, {
+            type: 'put'
+        })
+
+
 
     },
 
-     removeModel:function(removemodel){
-     
-     	removemodel.save({}, { 
-    	type: 'delete' 
-		})
-    	this.remove(removemodel);
-    	this.trigger('add-student');
-	
+    removeModel: function(removemodel) {
+
+        removemodel.save({}, {
+            type: 'delete'
+        })
+        this.remove(removemodel);
+        this.trigger('add-student');
+
 
     },
 
 
 
-   
+
 });
+
 },{}],8:[function(require,module,exports){
 module.exports = Backbone.Model.extend({
-	 url: 'api/student',
-	 initialize:function(){
-	 	this.set('id', _.uniqueId('stu'))
+    url: 'api/student',
+    initialize: function() {
+        this.set('id', _.uniqueId('stu'))
 
-	 }
+    }
 });
+
 },{}],9:[function(require,module,exports){
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
@@ -12993,13 +13001,13 @@ return __p;
 module.exports = function(obj){
 var __t,__p='',__j=Array.prototype.join,print=function(){__p+=__j.call(arguments,'');};
 with(obj||{}){
-__p+='\t\t <ul id="stats" class="list-inline">\n\n\t\t  \n\t\t         <li class="col-md-3"><b>Lowest Grade<br/><span><b>'+
+__p+='\t <ul id="stats" class="list-inline">\n\t\t<li class="col-md-3"><b>Lowest Grade<br/><span><b>'+
 ((__t=( minval ))==null?'':__t)+
-'%</b></span></li>\n\t\t         <li class="col-md-3"><b>Highest Grade<br/><span>'+
+'%</b></span></li>\n\t\t<li class="col-md-3"><b>Highest Grade<br/><span>'+
 ((__t=( maxval ))==null?'':__t)+
-'%</b></span></li>\n\t\t         <li class="col-md-3"><b> Average Grades<br/><span>'+
+'%</b></span></li>\n\t\t<li class="col-md-3"><b> Average Grades<br/><span>'+
 ((__t=( avgval ))==null?'':__t)+
-'%</b></span></li>\n\t\t          \n\t\t  </ul>       ';
+'%</b></span></li>\n\t</ul>       ';
 }
 return __p;
 };
@@ -13018,15 +13026,15 @@ __p+=' \n<div class="list-group-item '+
 ((__t=( o.id ))==null?'':__t)+
 '" data-id ="'+
 ((__t=( o.id ))==null?'':__t)+
-'" class="close pull-right" data-dismiss="alert">X</button>\n\t\t<ul class="list-inline">\n\t\t <li id="'+
+'" class="close pull-right" data-dismiss="alert">X</button>\n\t\t<ul class="list-inline">\n\t\t <label>First </label><li id="'+
 ((__t=( o.id ))==null?'':__t)+
 'first"  class="editable editable-text">'+
 ((__t=( o.firstname ))==null?'':__t)+
-'  </li>\n\t\t <li id="'+
+'  </li>\n\t\t <label>Last </label><li id="'+
 ((__t=( o.id ))==null?'':__t)+
 'last" class="editable editable-text ">'+
 ((__t=( o.lastname ))==null?'':__t)+
-'  </li>\n\t\t <li id="'+
+'  </li>\n\t\t <label>Score</label><li id="'+
 ((__t=( o.id ))==null?'':__t)+
 'score"class="editable editable-text">'+
 ((__t=( o.testscore ))==null?'':__t)+
