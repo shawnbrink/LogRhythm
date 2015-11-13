@@ -5,7 +5,7 @@
 Requirements: `node npm` needs to be installed 
 >Untar file and then a terminal
 
->cd ~/LogRythm
+>cd ~/Student
 
 
 ## Install Grunt global
@@ -37,7 +37,7 @@ Done, without errors.
 
 	 node server.js
 Example out put in terminal
->LogRhythm demo app started on port 3000
+>Student demo app started on port 3000
 
 ## Launch app in a browser
 
