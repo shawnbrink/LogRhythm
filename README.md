@@ -1,4 +1,4 @@
-# LogRhythm Demo
+# Student Demo
 > Programming Exercise 
 
 ## Installation
