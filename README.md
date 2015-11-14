@@ -1,11 +1,10 @@
-# Student Demo
-> Programming Exercise 
+# flipit
 
 ## Installation
 Requirements: `node npm` needs to be installed 
 >Untar file and then a terminal
 
->cd ~/Student
+>cd ~/flipit
 
 
 ## Install Grunt global
